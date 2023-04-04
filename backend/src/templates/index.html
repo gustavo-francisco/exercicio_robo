@@ -5,7 +5,7 @@
   </head>
   <body>
     <h1>Adicionar nova posição</h1>
-    <form action="/positions" method="post">
+    <form action="{{ url_for('create_positions') }}" method="post">
       <label for="x">X:</label>
       <input type="text" id="x" name="x"><br><br>
       <label for="y">Y:</label>
@@ -18,7 +18,45 @@
       <input type="text" id="j2" name="j2"><br><br>
       <label for="j3">J3:</label>
       <input type="text" id="j3" name="j3"><br><br>
-      <input type="submit" value="Adicionar">
+      <button type="button" value="Adicionar" onclick="send_data()">Enviar</button>
     </form>
+
+    <script>
+        async function send_data(){
+          event.preventDefault()
+          const response = await fetch('http://127.0.0.1:5000/positions', {
+            method: 'POST',
+            body: JSON.stringify({
+              x: document.getElementById('x').value,
+              y: document.getElementById('y').value,
+              z: document.getElementById('z').value,
+              j1: document.getElementById('j1').value,
+              j2: document.getElementById('j2').value,
+              j3: document.getElementById('j3').value
+            }),
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+
+          if (response.ok) {
+            window.location.href = '/positions';
+          } else {
+            console.error('Erro ao enviar dados para o servidor');
+          }
+        }
+
+        async function show_data(){
+          event.preventDefault()
+          const response = await fetch('http://127.0.0.1:5000/', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
+          const json = await response.json()
+          console.log(json)
+        }
+    </script>
   </body>
 </html>

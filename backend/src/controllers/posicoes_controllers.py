@@ -6,7 +6,8 @@ from flask import request
 
 def read():
     positions = session.query(Posicoes).all()
-    return str(positions)
+    json_obj = {"positions": [position.return_json() for position in positions]}
+    return json_obj
 
 def create():
     added_position = Posicoes(x = request.json['x'], y = request.json['y'], z = request.json['z'], j1 = request.json['j1'], j2 = request.json['j2'], j3 = request.json['j3'])

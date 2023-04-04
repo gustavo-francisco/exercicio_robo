@@ -3,9 +3,13 @@ from flask import render_template
 
 def init_app(app):
 
+    @app.route("/")
+    def template():
+        return render_template('index.html')
+
     @app.route("/positions", methods=['GET'])
     def read_positions():
-        return render_template('index.html')
+        return posicoes_controllers.read()
     
     @app.route("/positions", methods=['POST'])
     def create_positions():
